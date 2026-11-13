@@ -3,3 +3,8 @@
 html, body { margin: 0; height: 100%; background: #0d0f1a; overflow: hidden; }
 body { display: flex; align-items: center; justify-content: center; cursor: none; }
 canvas { image-rendering: crisp-edges; image-rendering: pixelated; touch-action: none; }
+
+#namebox { position: fixed; left: 50%; bottom: 2vh; transform: translateX(-50%); display: none; align-items: center; gap: 8px; padding: 10px 12px; background: rgba(26,28,44,.95); border: 2px solid #ef7d57; color: #f4f4f4; font: 12px/1 monospace; cursor: auto; z-index: 5; }
+#namebox input { width: 130px; padding: 6px; font: inherit; text-transform: uppercase; color: #ffcd75; background: #0d0f1a; border: 1px solid #566c86; outline: none; }
+#namebox button { padding: 6px 10px; font: inherit; color: #1a1c2c; background: #ef7d57; border: 0; cursor: pointer; }
+#namebox button.skip { color: #566c86; background: transparent; }
