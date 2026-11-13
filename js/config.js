@@ -10,11 +10,13 @@ const Config = {
 
   light: { start: 70, max: 118, min: 12, decayBase: 3, decayRamp: 2.6, sparkGain: 18, dropDamage: 20 },
   rain: { slowest: 100, fastest: 225, gapStart: 0.9, gapEnd: 0.25 },
-  rampSeconds: 90,      
+  rampSeconds: 90,
   maxSparks: 4,
   sparkLife: 9,
   storageKey: 'ember-best',
   nameKey: 'ember-name',
+
+  // Leaderboard Worker URL. Set to '' to turn the leaderboard off.
   api: 'https://ember-leaderboard.octo-agency.workers.dev',
   minSubmit: 5,
 };
