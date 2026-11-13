@@ -14,4 +14,7 @@ const Config = {
   maxSparks: 4,
   sparkLife: 9,
   storageKey: 'ember-best',
+  nameKey: 'ember-name',
+  api: 'https://ember-leaderboard.octo-agency.workers.dev',
+  minSubmit: 5,
 };
