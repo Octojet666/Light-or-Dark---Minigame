@@ -12,6 +12,9 @@ class Game {
     this.overTime = 0;
     this.newBest = false;
     this.best = 0;
+    this.runId = 0;
+    this.submitState = 'idle';
+    this.rank = null;
     try { this.best = +localStorage.getItem(Config.storageKey) || 0; } catch (e) {}
     this.reset();
   }
@@ -24,6 +27,8 @@ class Game {
 
   start() {
     this.reset();
+    this.runId++;
+    Leaderboard.hidePrompt();
     this.state = 'play';
     this.time = 0;
     this.light = Config.light.start;
@@ -40,6 +45,23 @@ class Game {
       try { localStorage.setItem(Config.storageKey, this.best); } catch (e) {}
     }
     Sound.over();
+  }
+    Sound.over();
+
+    this.submitState = 'idle'; this.rank = null;
+    if (Config.api && this.time >= Config.minSubmit) {
+      const name = Leaderboard.name();
+      if (name) this.sendScore(name);
+      else Leaderboard.prompt((n) => (n ? this.sendScore(n) : (this.submitState = 'skipped')));
+    }
+  }
+
+  sendScore(name) {
+    const run = this.runId, score = +this.time.toFixed(1);
+    this.submitState = 'sending';
+    Leaderboard.submit(name, score)
+      .then((r) => { if (run !== this.runId) return; this.rank = r.rank; this.submitState = 'done'; })
+      .catch(() => { if (run === this.runId) this.submitState = 'error'; });
   }
 
   press() {
@@ -160,6 +182,10 @@ class Game {
       Font.shadowed(ctx, 'YOU BURNED ' + this.time.toFixed(1) + ' SECONDS', W / 2, 96, 1, col.cream, col.dark, 'center');
       if (this.newBest) { if (blink) Font.shadowed(ctx, 'NEW BEST!', W / 2, 112, 2, col.gold, col.dark, 'center'); }
       else Font.shadowed(ctx, 'BEST ' + this.best.toFixed(1), W / 2, 112, 1, col.vein, col.dark, 'center');
+      const st = this.submitState;
+      if (st === 'sending') Font.shadowed(ctx, 'SAVING SCORE...', W / 2, 124, 1, col.vein, col.dark, 'center');
+      else if (st === 'done') Font.shadowed(ctx, this.rank ? 'WORLD RANK ' + this.rank : 'NOT IN THE TOP 50', W / 2, 124, 1, col.rainLight, col.dark, 'center');
+      else if (st === 'error') Font.shadowed(ctx, 'LEADERBOARD OFFLINE', W / 2, 124, 1, col.red, col.dark, 'center');
       if (this.overTime > 0.7 && blink) Font.shadowed(ctx, 'CLICK TO RELIGHT', W / 2, 140, 1, col.gold, col.dark, 'center');
     }
   }
