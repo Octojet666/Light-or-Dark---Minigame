@@ -13,7 +13,7 @@ class Game {
     this.newBest = false;
     this.best = 0;
     this.runId = 0;
-    this.submitState = 'idle';
+    this.submitState = 'idle'; // idle | sending | done | error | skipped
     this.rank = null;
     try { this.best = +localStorage.getItem(Config.storageKey) || 0; } catch (e) {}
     this.reset();
@@ -44,8 +44,6 @@ class Game {
       this.best = this.time;
       try { localStorage.setItem(Config.storageKey, this.best); } catch (e) {}
     }
-    Sound.over();
-  }
     Sound.over();
 
     this.submitState = 'idle'; this.rank = null;
