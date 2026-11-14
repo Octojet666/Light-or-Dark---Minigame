@@ -8,3 +8,5 @@ canvas { image-rendering: crisp-edges; image-rendering: pixelated; touch-action:
 #namebox input { width: 130px; padding: 6px; font: inherit; text-transform: uppercase; color: #ffcd75; background: #0d0f1a; border: 1px solid #566c86; outline: none; }
 #namebox button { padding: 6px 10px; font: inherit; color: #1a1c2c; background: #ef7d57; border: 0; cursor: pointer; }
 #namebox button.skip { color: #566c86; background: transparent; }
+
+#namebox a.ok { padding: 6px 10px; color: #1a1c2c; background: #ef7d57; text-decoration: none; }
