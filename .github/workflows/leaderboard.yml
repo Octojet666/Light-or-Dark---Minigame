@@ -1,0 +1,44 @@
+name: Leaderboard
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: leaderboard
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: startsWith(github.event.issue.title, 'SCORE|')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update leaderboard
+        id: lb
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_USER: ${{ github.event.issue.user.login }}
+        run: node .github/scripts/update-leaderboard.mjs
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add leaderboard.json leaderboard.svg
+          git diff --cached --quiet || (git commit -m "leaderboard: update" && git pull --rebase && git push)
+
+      - name: Reply and close
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          MSG: ${{ steps.lb.outputs.message }}
+          NUM: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$NUM" --body "$MSG"
+          gh issue close "$NUM" --reason completed
