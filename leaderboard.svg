@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="166" viewBox="0 0 800 166" font-family="'Fira Code', ui-monospace, Menlo, Consolas, monospace">
+  <rect x="1" y="1" width="798" height="164" rx="14" fill="#0B1026" stroke="#242B55" stroke-width="2"/>
+  <circle cx="52" cy="44" r="9" fill="#EF7D57"/><circle cx="52" cy="44" r="15" fill="#EF7D57" opacity="0.2"/>
+  <text x="80" y="50" fill="#E6E9FF" font-size="22" font-weight="700">EMBER · LEADERBOARD</text>
+  <text x="768" y="50" text-anchor="end" fill="#8B93B8" font-size="13">longest time alive</text>
+  <text x="400" y="116" text-anchor="middle" fill="#8B93B8" font-size="16">No scores yet. Be the first to keep the light alive.</text>
+  <text x="400" y="152" text-anchor="middle" fill="#566C86" font-size="12">play, then submit your score · updates within a minute</text>
+</svg>
