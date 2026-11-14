@@ -1,45 +1,28 @@
 const Leaderboard = (() => {
-  let box = null;
-  const clean = (n) => String(n).toUpperCase().replace(/[^A-Z0-9 _.-]/g, '').trim().slice(0, 12);
-
-  function name() {
-    try { return clean(localStorage.getItem(Config.nameKey) || ''); } catch (e) { return ''; }
-  }
-
-  async function submit(n, score) {
-    try { localStorage.setItem(Config.nameKey, n); } catch (e) {}
-    const r = await fetch(Config.api + '/score', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: n, score }),
-    });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  }
+  let box = null, label = null, link = null;
 
   function build() {
     box = document.createElement('div');
     box.id = 'namebox';
-    box.innerHTML = '<span>NAME</span><input maxlength="12" placeholder="YOUR NAME" autocomplete="off" spellcheck="false">' +
-      '<button class="ok">SAVE</button><button class="skip">SKIP</button>';
+    box.innerHTML = '<span>SCORE <b></b></span><a class="ok" target="_blank" rel="noopener">SUBMIT SCORE</a><button class="skip">HIDE</button>';
+    label = box.querySelector('b');
+    link = box.querySelector('a');
+    box.querySelector('.skip').onclick = hidePrompt;
+    link.addEventListener('click', () => setTimeout(hidePrompt, 100));
     box.addEventListener('pointerdown', (e) => e.stopPropagation());
     document.body.appendChild(box);
   }
 
-  function prompt(done) {
+  function offer(score) {
     if (!box) build();
-    const input = box.querySelector('input');
-    const finish = (v) => { box.style.display = 'none'; done(v); };
-    const save = () => { const n = clean(input.value); if (n) finish(n); };
-    box.querySelector('.ok').onclick = save;
-    box.querySelector('.skip').onclick = () => finish('');
-    input.onkeydown = (e) => { e.stopPropagation(); if (e.key === 'Enter') save(); };
-    input.value = '';
+    label.textContent = score.toFixed(1) + 'S';
+    link.href = 'https://github.com/' + Config.repo + '/issues/new?title=' +
+      encodeURIComponent('SCORE|' + score.toFixed(1)) +
+      '&body=' + encodeURIComponent('Submitting my Ember score. Just press "Submit new issue" and the leaderboard updates in about a minute.');
     box.style.display = 'flex';
-    input.focus();
   }
 
   function hidePrompt() { if (box) box.style.display = 'none'; }
 
-  return { name, submit, prompt, hidePrompt };
+  return { offer, hidePrompt };
 })();
