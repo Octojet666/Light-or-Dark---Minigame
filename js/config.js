@@ -14,9 +14,7 @@ const Config = {
   maxSparks: 4,
   sparkLife: 9,
   storageKey: 'ember-best',
-  nameKey: 'ember-name',
 
-  // Leaderboard Worker URL. Set to '' to turn the leaderboard off.
-  api: 'https://ember-leaderboard.octo-agency.workers.dev',
+  repo: 'Octojet666/Light-or-Dark---Minigame',
   minSubmit: 5,
 };
